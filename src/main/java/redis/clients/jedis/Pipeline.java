@@ -6,13 +6,16 @@ import java.util.List;
 
 import redis.clients.jedis.exceptions.JedisDataException;
 
+/* 怎么是使用exec和multi实现的呢 */
 public class Pipeline extends MultiKeyPipelineBase implements Closeable {
 
   private MultiResponseBuilder currentMulti;
 
+  /* 对pipeline结果的处理 */
   private class MultiResponseBuilder extends Builder<List<Object>> {
     private List<Response<?>> responses = new ArrayList<Response<?>>();
 
+    /* 将后段返回的数据设置到response中 */
     @Override
     public List<Object> build(Object data) {
       @SuppressWarnings("unchecked")
@@ -29,7 +32,7 @@ public class Pipeline extends MultiKeyPipelineBase implements Closeable {
         response.set(list.get(i));
         Object builtResponse;
         try {
-          builtResponse = response.get();
+          builtResponse = response.get(); /* 获得结果 */
         } catch (JedisDataException e) {
           builtResponse = e;
         }
@@ -49,6 +52,7 @@ public class Pipeline extends MultiKeyPipelineBase implements Closeable {
     }
   }
 
+  /* 新建一个Response */
   @Override
   protected <T> Response<T> getResponse(Builder<T> builder) {
     if (currentMulti != null) {
@@ -92,6 +96,7 @@ public class Pipeline extends MultiKeyPipelineBase implements Closeable {
    * Synchronize pipeline by reading all responses. This operation close the pipeline. In order to
    * get return values from pipelined commands, capture the different Response&lt;?&gt; of the
    * commands you execute.
+   *  获得多个命令的回应
    */
   public void sync() {
     if (getPipelinedResponseLength() > 0) {
@@ -114,7 +119,7 @@ public class Pipeline extends MultiKeyPipelineBase implements Closeable {
       List<Object> formatted = new ArrayList<Object>();
       for (Object o : unformatted) {
         try {
-          formatted.add(generateResponse(o).get());
+          formatted.add(generateResponse(o).get()); /* 获得返回给上层的结果 */
         } catch (JedisDataException e) {
           formatted.add(e);
         }
@@ -132,6 +137,7 @@ public class Pipeline extends MultiKeyPipelineBase implements Closeable {
     return getResponse(BuilderFactory.STRING);
   }
 
+  /* 执行 */
   public Response<List<Object>> exec() {
     if (currentMulti == null) throw new JedisDataException("EXEC without MULTI");
 

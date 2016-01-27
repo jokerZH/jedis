@@ -22,7 +22,7 @@ public class RedisInputStream extends FilterInputStream {
 
   protected final byte buf[];
 
-  protected int count, limit;
+  protected int count, limit; //count处理的数据量, limit读取的数据量
 
   public RedisInputStream(InputStream in, int size) {
     super(in);

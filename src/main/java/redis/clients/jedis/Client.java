@@ -21,6 +21,7 @@ import redis.clients.jedis.params.sortedset.ZAddParams;
 import redis.clients.jedis.params.sortedset.ZIncrByParams;
 import redis.clients.util.SafeEncoder;
 
+/* 在BinaryClient的基础上实现了参数是特定类型的命令处理函数 */
 public class Client extends BinaryClient implements Commands {
 
   public Client() {

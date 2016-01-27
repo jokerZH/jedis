@@ -33,6 +33,7 @@ import redis.clients.util.JedisByteHashMap;
 import redis.clients.util.JedisURIHelper;
 import redis.clients.util.SafeEncoder;
 
+/* 主要功能通过Client实现,这里负责调用Client的函数, 感觉有session的概念 */
 public class BinaryJedis implements BasicCommands, BinaryJedisCommands, MultiKeyBinaryCommands,
     AdvancedBinaryJedisCommands, BinaryScriptingCommands, Closeable {
   protected Client client = null;
@@ -154,6 +155,7 @@ public class BinaryJedis implements BasicCommands, BinaryJedisCommands, MultiKey
     client.setSoTimeout(soTimeout);
   }
 
+  /* 根据uri连接后端 */
   private void initializeClientFromURI(URI uri) {
     if (!JedisURIHelper.isValid(uri)) {
       throw new InvalidURIException(String.format(

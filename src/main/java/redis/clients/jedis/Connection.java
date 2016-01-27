@@ -120,6 +120,7 @@ public class Connection implements Closeable {
     return sendCommand(cmd, EMPTY_ARGS);
   }
 
+  /* 发送请求msg */
   protected Connection sendCommand(final ProtocolCommand cmd, final byte[]... args) {
     try {
       connect();
@@ -313,6 +314,7 @@ public class Connection implements Closeable {
     }
   }
 
+  /* 获得多个回应 */
   public List<Object> getMany(final int count) {
     flush();
     final List<Object> responses = new ArrayList<Object>(count);

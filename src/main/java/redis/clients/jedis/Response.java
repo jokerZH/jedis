@@ -3,16 +3,16 @@ package redis.clients.jedis;
 import redis.clients.jedis.exceptions.JedisDataException;
 
 public class Response<T> {
-  protected T response = null;
-  protected JedisDataException exception = null;
+  protected T response = null;            /* 返回的数据 */
+  protected JedisDataException exception = null;  /* 返回的异常 */
 
-  private boolean building = false;
-  private boolean built = false;
-  private boolean set = false;
+  private boolean building = false;       /* 正在获得反回 */
+  private boolean built = false;          /* 已经获得返回 */
+  private boolean set = false;            /* data是否已经初始化 */
 
-  private Builder<T> builder;
-  private Object data;
-  private Response<?> dependency = null;
+  private Builder<T> builder;             /* 获得当前response的handle */
+  private Object data;                    /* 服务端返回的数据,byte的形式的 */
+  private Response<?> dependency = null;  /* 依赖的response */
 
   public Response(Builder<T> b) {
     this.builder = b;

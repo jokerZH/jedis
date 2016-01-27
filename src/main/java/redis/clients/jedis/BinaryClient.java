@@ -32,6 +32,7 @@ import redis.clients.jedis.params.sortedset.ZAddParams;
 import redis.clients.jedis.params.sortedset.ZIncrByParams;
 import redis.clients.util.SafeEncoder;
 
+/* 表示一个连接,实现各个cmd的函数,负责发送各个命令, 参数还是byte形式的 */
 public class BinaryClient extends Connection {
   public enum LIST_POSITION {
     BEFORE, AFTER;
@@ -44,9 +45,9 @@ public class BinaryClient extends Connection {
 
   private boolean isInMulti;
 
-  private String password;
+  private String password;  /* 连接redis的密码 */
 
-  private int db;
+  private int db;   /* 当前使用了redis的那个后端 */
 
   private boolean isInWatch;
 
@@ -80,6 +81,7 @@ public class BinaryClient extends Connection {
     super(host, port, ssl, sslSocketFactory, sslParameters, hostnameVerifier);
   }
 
+  /* 将first和rest合并起来成一个二维数组 */
   private byte[][] joinParameters(byte[] first, byte[][] rest) {
     byte[][] result = new byte[rest.length + 1][];
     result[0] = first;
